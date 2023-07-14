@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MainWP Browser Extension</title>
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="js/toastr/toastr.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- header section -->
+        <header>
+            <div class="nav_bar">
+                <div class="logo">
+                    <a href="https://mainwp.com/" target="_blank"><img src="assets/images/logo.png" alt=""></a>
+                </div>
+                <nav id="myLinks">
+                    <ul>
+                        <li><a class="open_settings">Settings</a></li>
+                        <li><a class="open_dashboard">Dashboard</a></li>
+                        <li><a href="https://kb.mainwp.com/" target="_blank">Knowledge Base</a></li>
+                        <li><a href="https://managers.mainwp.com/" target="_blank">Support</a></li>
+                        <li><a href="https://mainwp.com/" target="_blank">MainWP</a></li>
+                    </ul>
+                </nav>
+                <a class="icon hamburger">
+                    <i class="fa-solid fa-bars fa-lg"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- form banner section -->
+        <div class="settings_page hide">
+            <section class="form_banner_section">
+                <div class="form_banner">
+                    <p>Welcome! To start with the MainWP Browser Extension, please fill in the details below. If you have questions please start in our <a href="https://kb.mainwp.com/docs/mainwp-browser-extension/" target="_blank">Knowledge Base</a> and should you need any assistance, our friendly support team is just a click away in our <a href="https://managers.mainwp.com/" target="_blank">community forum</a>.</p>
+                </div>
+            </section>
+
+            <!-- form section start -->
+            <section class="form_section">
+                <div class="form_box">
+                    <div class="form_control">
+                        <p class="label">Enter your MainWP Dashboard URL</p>
+                        <input type="text" class="mainwp_url">
+                    </div>
+
+                    <div class="form_control">
+                        <p class="label">Enter your Consumer Key <i class="fas fa-question-circle mainwp-tooltip-ck"></i></p>
+                        <input type="password" class="mainwp_key">
+                    </div>
+                    <div class="form_control">
+                        <p class="label">Enter your Consumer Secret <i class="fas fa-question-circle mainwp-tooltip-cs"></i></p>
+                        <input type="password" class="mainwp_secret">
+                    </div>
+                    <div class="form_control">
+                        <p><input type="checkbox" class="saved_api" >I have saved the API Key in my Dashboard <i class="fas fa-question-circle mainwp-tooltip-cb"></i></p>
+                    </div>
+                    <div class="options">
+                        <p class="label">Select frequency</p>
+                        <select class="frequency">
+                            <option value="96">Every 15 minutes</option>
+                            <option value="48">Every 30 minutes</option>
+                            <option value="24">Every hour</option>
+                            <option value="12">Every 2 hours</option>
+                            <option value="6">Every 4 hours</option>
+                            <option value="4">Four times per day</option>
+                            <option value="2">Twice per day</option>
+                            <option value="1">Once per day</option>
+                        </select>
+                    </div>
+                    <div class="select-choice">
+                        <p class="label">Select data to sync:</p>
+                        <p><input type="checkbox" value="wordpress_core_updates" >WordPress updates</p>
+                        <p><input type="checkbox" value="plugin_updates">Plugins updates</p>
+                        <p><input type="checkbox" value="themes_updates">Themes updates</p>
+                        <p><input type="checkbox" value="transalation_updates">Translations updates</p>
+                        <p><input type="checkbox" value="nonmainwp_changes">Non-MainWP changes</p>
+                    </div>
+                </div>
+                <div class="button-box">
+                    <button class="save_settings">Save Settings</button>
+                </div>
+            </section>
+        </div>
+
+
+        <div class="hide updates_page">
+            <section class="banner_section">
+                <div class="banner_box">
+                    <p class="my_dashboard"></p>
+                </div>
+            </section>
+
+            <!-- dashboard list section -->
+
+            <section class="dashbaord_section">
+                <div class="dashboard">
+                    <div class="dashboard_item dashboard_item_total">
+                        <div class="item_heading">
+                            <i class="fa-solid fa-arrows-rotate fa-xl"></i>
+                            <p>Total Updates</p>
+                        </div>
+                        <div class="item_count">
+                            <div class="spinner">
+                                <div class="spinner-inner"><i class="fas fa-circle-notch fa-spin fa-xl"></i></div>
+                            </div>
+                            <p class="total_updates_count hide"><i class="fas fa-check"></i></p>
+                        </div>
+                    </div>
+                    <div class="dashboard_item plugin_updates hide">
+                        <div class="item_heading">
+                            <i class="fa-solid fa-plug fa-xl"></i>
+                            <p>Plugins</p>
+                        </div>
+                        <div class="item_count">
+                            <div class="spinner">
+                                <div class="spinner-inner"><i class="fas fa-circle-notch fa-spin fa-xl"></i></div>
+                            </div>
+                            <p class="plugin_updates_count hide"><i class="fas fa-check"></i></p>
+                        </div>
+                    </div>
+                    <div class="dashboard_item themes_updates hide">
+                        <div class="item_heading">
+                            <i class="fa-solid fa-droplet fa-xl"></i>
+                            <p>Themes</p>
+                        </div>
+                        <div class="item_count">
+                            <div class="spinner">
+                                <div class="spinner-inner"><i class="fas fa-circle-notch fa-spin fa-xl"></i></div>
+                            </div>
+                            <p class="themes_updates_count hide"><i class="fas fa-check"></i></p>
+                        </div>
+                    </div>
+                    <div class="dashboard_item wordpress_core_updates hide">
+                        <div class="item_heading">
+                            <i class="fa-brands fa-wordpress fa-xl"></i>
+                            <p>WordPress Core</p>
+                        </div>
+                        <div class="item_count">
+                            <div class="spinner">
+                                <div class="spinner-inner"><i class="fas fa-circle-notch fa-spin fa-xl"></i></div>
+                            </div>
+                            <p class="wordpress_core_updates_count hide"><i class="fas fa-check"></i></p>
+                        </div>
+                    </div>
+                    <div class="dashboard_item transalation_updates hide">
+                        <div class="item_heading">
+                            <i class="fa-solid fa-language fa-xl"></i>
+                            <p>Translations</p>
+                        </div>
+                        <div class="item_count">
+                            <div class="spinner">
+                                <div class="spinner-inner"><i class="fas fa-circle-notch fa-spin fa-xl"></i></div>
+                            </div>
+                            <p class="transalation_updates_count hide"><i class="fas fa-check"></i></p>
+                        </div>
+                    </div>
+                    <div class="dashboard_item nonmainwp_changes hide">
+                        <div class="item_heading">
+                            <i class="fa-solid fa-circle-info fa-xl"></i>
+                            <p>Non-MainWP Changes</p>
+                        </div>
+                        <div class="item_count">
+                            <div class="spinner">
+                                <div class="spinner-inner"><i class="fas fa-circle-notch fa-spin fa-xl"></i></div>
+                            </div>
+
+                            <p class="nonmainwp_changes_count hide"><i class="fas fa-check"></i></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-box">
+                    <button class="btn_sync">Sync Dashboard Data</button>
+                    <p>Last Sync: <span class="last_sync"></span> </p>
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+    <script src="jquery-3.1.1.js"></script>
+    <script src="js/toastr/toastr.js"></script>
+    <script src="js/mainwp.js"></script>
+</body>
+
+</html>
