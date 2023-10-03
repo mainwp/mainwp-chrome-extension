@@ -16,10 +16,10 @@ chrome.runtime.onMessage.addListener(
 
 chrome.windows.onCreated.addListener(function() {
     chrome.storage.sync.get(["sync_updates"], function(result) {
-         if(result.sync_updates !== undefined){
-             let updatedData = JSON.parse(result.sync_updates);
-             chrome.storage.sync.get(['settings'],function(resp){
-                 if(resp.settings !== undefined){
+        if(result.sync_updates !== undefined){
+            let updatedData = JSON.parse(result.sync_updates);
+            chrome.storage.sync.get(['settings'],function(resp){
+                if(resp.settings !== undefined){
                     let settings = JSON.parse(resp.settings);
                     let sync_data = settings.sync_data;
                     let nonWPupdates = updatedData?.nonmainwp_changes_count
@@ -34,31 +34,26 @@ chrome.windows.onCreated.addListener(function() {
                         }
                     });
 
-                    let total_cut = 0;
-                    let nonWPupdates_cut = 0;
+                    let total_cut = (total > 99) ? 99 : total;
+                    let nonWPupdates_cut = (nonWPupdates > 99) ? 99 : nonWPupdates;
+                    if (total > 0 || (settings.sync_data.nonmainwp_changes && nonWPupdates > 0)) {
+                        let badge_text = total_cut.toString();
+                        let notification_message = `You have ${total} updates available`;
 
-                    if ( total > 99 ) {
-                        total_cut = 99;
-                    } else {
-                        total_cut = total;
-                    }
-        
-                    if ( nonWPupdates > 99 ) {
-                        nonWPupdates_cut = 99;
-                    } else {
-                        nonWPupdates_cut = nonWPupdates;
-                    }
-        
-                    if (total > 0 || nonWPupdates > 0) {
-                        chrome.action.setBadgeText({ text: total_cut.toString() + '-' + nonWPupdates_cut.toString() });
+                        if (settings.sync_data.nonmainwp_changes && nonWPupdates > 0) {
+                            badge_text += `-${nonWPupdates_cut.toString()}`;
+                            notification_message += ` and ${nonWPupdates} Non-MainWP changes to review`;
+                        }
+
+                        chrome.action.setBadgeText({ text: badge_text });
                         chrome.action.setBadgeBackgroundColor({ color: '#FFD300' });
                     } else {
                         chrome.action.setBadgeText({ text: '' });
                     }
 
-                 }
-             })
-         }
+                }
+            })
+        }
     });
 })
 
@@ -157,30 +152,25 @@ const getUpdatesCount = () => {
                 }
             });
 
-            let total_cut = 0;
-            let nonWPupdates_cut = 0;
+            let total_cut = (total > 99) ? 99 : total;
+            let nonWPupdates_cut = (nonWPupdates > 99) ? 99 : nonWPupdates;
+            if (total > 0 || (settings.sync_data.nonmainwp_changes && nonWPupdates > 0)) {
+                let badge_text = total_cut.toString();
+                let notification_message = `You have ${total} updates available`;
 
-            if ( total > 99 ) {
-                total_cut = 99;
-            } else {
-                total_cut = total;
-            }
+                if (settings.sync_data.nonmainwp_changes && nonWPupdates > 0) {
+                    badge_text += `-${nonWPupdates_cut.toString()}`;
+                    notification_message += ` and ${nonWPupdates} Non-MainWP changes to review`;
+                }
 
-            if ( nonWPupdates > 99 ) {
-                nonWPupdates_cut = 99;
-            } else {
-                nonWPupdates_cut = nonWPupdates;
-            }
-
-            if (total > 0 || nonWPupdates > 0) {
-                chrome.action.setBadgeText({ text: total_cut.toString() + '-' + nonWPupdates_cut.toString() });
+                chrome.action.setBadgeText({ text: badge_text });
                 chrome.action.setBadgeBackgroundColor({ color: '#FFD300' });
-                chrome.notifications.create({
-                    type: "basic",
-                    iconUrl: "assets/images/mainwp128.png",
-                    title: "MainWP Updates",
-                    message: `You have ${total} updates available and ${nonWPupdates} Non-MainWP changes to review.`
-                });
+                    chrome.notifications.create({
+                        type: "basic",
+                        iconUrl: "assets/images/mainwp128.png",
+                        title: "MainWP Updates",
+                        message: notification_message
+                    });
             } else {
                 chrome.action.setBadgeText({ text: '' });
             }
