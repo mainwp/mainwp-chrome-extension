@@ -413,36 +413,32 @@ $(document).ready(() => {
             $('.total_updates_count').siblings('.spinner').addClass('hide');
             $('.total_updates_count').removeClass('hide');
 
-            let total_cut = 0;
-            let nonWPupdates_cut = 0;
+            let total_cut = (total > 99) ? 99 : total;
+            let nonWPupdates_cut = (nonWPupdates > 99) ? 99 : nonWPupdates;
 
-            if ( total > 99 ) {
-                total_cut = 99;
-            } else {
-                total_cut = total;
-            }
+            if (total > 0 || (settings.sync_data.nonmainwp_changes && nonWPupdates > 0)) {
+                let badge_text = total_cut.toString();
+                let notification_message = `You have ${total} updates available`;
 
-            if ( nonWPupdates > 99 ) {
-                nonWPupdates_cut = 99;
-            } else {
-                nonWPupdates_cut = nonWPupdates;
-            }
+                if(settings.sync_data.nonmainwp_changes && nonWPupdates > 0) {
+                    badge_text += `-${nonWPupdates_cut.toString()}`;
+                    notification_message += ` and ${nonWPupdates} Non-MainWP changes to review`;
+                }
 
-            if (total > 0 || nonWPupdates > 0) {
-                chrome.action.setBadgeText({ text: total_cut.toString() + '-' + nonWPupdates_cut.toString() });
+                chrome.action.setBadgeText({ text: badge_text });
                 chrome.action.setBadgeBackgroundColor({ color: '#FFD300' });
                 if (notification) {
                     chrome.notifications.create({
                         type: "basic",
                         iconUrl: "assets/images/mainwp128.png",
                         title: "MainWP Updates",
-                        message: `You have ${total} updates available and ${nonWPupdates} Non-MainWP changes to review.`
+                        message: notification_message
                     });
                 }
             } else {
                 chrome.action.setBadgeText({ text: '' });
             }
-
+            
             // Update the last_sync element with the formatted date
             $('.last_sync').text(formattedDate);
         });
@@ -511,5 +507,5 @@ $(document).ready(() => {
             resolve(nonWPupdateCount);
         })
     }
-
+    
 })
